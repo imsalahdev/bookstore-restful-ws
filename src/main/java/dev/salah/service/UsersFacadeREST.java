@@ -78,12 +78,11 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
     }
 
     @GET
-    @Path("credentials/{email}/{password}")
+    @Path("email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Users findByCredentials(@PathParam("email") String email, @PathParam("password") String password) {
-        Query query = em.createNamedQuery("Users.findByCredentials")
-                .setParameter("email", email)
-                .setParameter("password", password);
+    public Users findByEmail(@PathParam("email") String email) {
+        Query query = em.createNamedQuery("Users.findByEmail")
+                .setParameter("email", email);
         return (Users) query.getSingleResult();
     }
 
