@@ -28,7 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Carts.findAll", query = "SELECT c FROM Carts c")
-    , @NamedQuery(name = "Carts.findById", query = "SELECT c FROM Carts c WHERE c.id = :id")})
+    , @NamedQuery(name = "Carts.findById", query = "SELECT c FROM Carts c WHERE c.id = :id")
+    , @NamedQuery(name = "Carts.findByUserId", query = "SELECT c FROM Carts c WHERE c.userId.id = :userId")
+    , @NamedQuery(name = "Carts.findByCart", query = "SELECT c FROM Carts c WHERE c.userId.id = :userId AND c.bookId.id = :bookId")
+    , @NamedQuery(name = "Carts.removeByCart", query = "DELETE FROM Carts c WHERE c.userId.id = :userId AND c.bookId.id = :bookId")})
 public class Carts implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,5 +102,5 @@ public class Carts implements Serializable {
     public String toString() {
         return "dev.salah.Carts[ id=" + id + " ]";
     }
-    
+
 }

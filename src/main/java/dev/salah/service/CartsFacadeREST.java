@@ -9,7 +9,9 @@ import dev.salah.Carts;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -54,6 +56,15 @@ public class CartsFacadeREST extends AbstractFacade<Carts> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
+    
+    @DELETE
+    @Path("cart/{userId}/{bookId}")
+    public void removeByCart(@PathParam("userId") Integer userId, @PathParam("bookId") Integer bookId) {
+        Query query = em.createNamedQuery("Carts.removeByCart")
+                .setParameter("userId", userId)
+                .setParameter("bookId", bookId);
+        query.executeUpdate();
+    }
 
     @GET
     @Path("{id}")
@@ -77,6 +88,28 @@ public class CartsFacadeREST extends AbstractFacade<Carts> {
     }
 
     @GET
+    @Path("userId/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Carts> findByUserId(@PathParam("userId") Integer userId) {
+        Query query = em.createNamedQuery("Carts.findByUserId").setParameter("userId", userId);
+        return (List<Carts>) query.getResultList();
+    }
+
+    @GET
+    @Path("cart/{userId}/{bookId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Carts findByCart(@PathParam("userId") Integer userId, @PathParam("bookId") Integer bookId) {
+        Query query = em.createNamedQuery("Carts.findByCart")
+                .setParameter("userId", userId)
+                .setParameter("bookId", bookId);
+        try {
+            return (Carts) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
@@ -87,5 +120,5 @@ public class CartsFacadeREST extends AbstractFacade<Carts> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
