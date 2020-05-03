@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username")
     , @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")
     , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")
-    , @NamedQuery(name = "Users.findByIsAdmin", query = "SELECT u FROM Users u WHERE u.isAdmin = :isAdmin")
+    , @NamedQuery(name = "Users.findByRole", query = "SELECT u FROM Users u WHERE u.role = :role")
     , @NamedQuery(name = "Users.findByCredentials", query = "SELECT u FROM Users u WHERE u.email = :email AND u.password = :password")})
 public class Users implements Serializable {
 
@@ -64,8 +64,9 @@ public class Users implements Serializable {
     private String password;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "isAdmin")
-    private boolean isAdmin;
+    @Size(min = 1, max = 255)
+    @Column(name = "role")
+    private String role;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -79,12 +80,12 @@ public class Users implements Serializable {
         this.id = id;
     }
 
-    public Users(Integer id, String username, String email, String password, boolean isAdmin, byte[] photo) {
+    public Users(Integer id, String username, String email, String password, String role, byte[] photo) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.role = role;
         this.photo = photo;
     }
 
@@ -120,12 +121,12 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public byte[] getPhoto() {

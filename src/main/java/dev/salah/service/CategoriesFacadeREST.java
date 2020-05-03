@@ -9,6 +9,7 @@ import dev.salah.Categories;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -67,8 +68,12 @@ public class CategoriesFacadeREST extends AbstractFacade<Categories> {
     @Path("name/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Categories findByName(@PathParam("name") String name) {
-        Query query = em.createNamedQuery("Categories.findByName").setParameter("name", name);
-        return (Categories) query.getSingleResult();
+        try {
+            Query query = em.createNamedQuery("Categories.findByName").setParameter("name", name);
+            return (Categories) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @GET

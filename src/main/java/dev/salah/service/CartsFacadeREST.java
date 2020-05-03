@@ -56,7 +56,15 @@ public class CartsFacadeREST extends AbstractFacade<Carts> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
-    
+
+    @DELETE
+    @Path("cart/{userId}")
+    public void removeByUserID(@PathParam("userId") Integer userId) {
+        Query query = em.createNamedQuery("Carts.removeByUserID")
+                .setParameter("userId", userId);
+        query.executeUpdate();
+    }
+
     @DELETE
     @Path("cart/{userId}/{bookId}")
     public void removeByCart(@PathParam("userId") Integer userId, @PathParam("bookId") Integer bookId) {
@@ -99,10 +107,10 @@ public class CartsFacadeREST extends AbstractFacade<Carts> {
     @Path("cart/{userId}/{bookId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Carts findByCart(@PathParam("userId") Integer userId, @PathParam("bookId") Integer bookId) {
-        Query query = em.createNamedQuery("Carts.findByCart")
-                .setParameter("userId", userId)
-                .setParameter("bookId", bookId);
         try {
+            Query query = em.createNamedQuery("Carts.findByCart")
+                    .setParameter("userId", userId)
+                    .setParameter("bookId", bookId);
             return (Carts) query.getSingleResult();
         } catch (NoResultException e) {
             return null;

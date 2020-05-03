@@ -9,6 +9,7 @@ import dev.salah.Users;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -81,9 +82,13 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
     @Path("email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Users findByEmail(@PathParam("email") String email) {
-        Query query = em.createNamedQuery("Users.findByEmail")
-                .setParameter("email", email);
-        return (Users) query.getSingleResult();
+        try {
+            Query query = em.createNamedQuery("Users.findByEmail")
+                    .setParameter("email", email);
+            return (Users) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @GET
