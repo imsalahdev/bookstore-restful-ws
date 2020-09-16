@@ -1,0 +1,14 @@
+dev\salah\Users.class
+dev\salah\service\UsersFacadeREST.class
+dev\salah\Categories_.class
+dev\salah\Users_.class
+dev\salah\Carts.class
+dev\salah\Books.class
+dev\salah\service\AbstractFacade.class
+dev\salah\Categories.class
+dev\salah\service\BooksFacadeREST.class
+dev\salah\service\CartsFacadeREST.class
+dev\salah\service\CategoriesFacadeREST.class
+dev\salah\Books_.class
+dev\salah\service\ApplicationConfig.class
+dev\salah\Carts_.class
